@@ -1,6 +1,5 @@
 package sort;
 
-
 import java.lang.reflect.Array;
 import java.util.Random;
 
@@ -26,25 +25,31 @@ public class Main {
         //System.out.println(parts[0][0]);
         //System.out.println(parts[k-2][0]+"last part");
         Sorter[] arraySorter=new Sorter[k];
-        for (int i = 0; i < k-1; i++) {
+        for (int i = 0; i < k; i++) {
+            if (i<k-1 ){
             arraySorter[i]=new Sorter(parts[i]);
-            arraySorter[i].start();
+            }
+            else{//отдельно создаем хвостик
+                arraySorter[i]=new Sorter(tail);
+            }
+            arraySorter[i].start();}
             try {
-                arraySorter[i].join();
+                for (int i = 0; i < k; i++) {
+                arraySorter[i].join();}
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }//отдельно запускаем хвостик
-        arraySorter[k-1]=new Sorter(tail);
-        int []res=parts[0];
-        arraySorter[k-1].start();
-        try {
-            arraySorter[k-1].join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //System.out.println(parts[0][0]);
 
+        //arraySorter[k-1]=new Sorter(tail);
+
+       // arraySorter[k-1].start();
+        //try {
+            //arraySorter[k-1].join();
+        //} catch (InterruptedException e) {
+            //e.printStackTrace();
+        //}
+        //System.out.println(parts[0][0]);
+        int []res=parts[0];
         for (int i = 1; i < k-1; i++) {
             res=merge(res,parts[i]);
 
@@ -95,7 +100,7 @@ public class Main {
         k=2;
         int kEnd=0;
         //int kLast=2;
-        int count=15;
+        int count=23;
         while(k<N+1&&count!=0){
               parts=new int[k-1][N/k];
               tail = new int[N-N/k*(k-1)];//так как разное количество элементов(тут может получится размер больший, чем в остальных)
@@ -104,28 +109,44 @@ public class Main {
                 System.arraycopy(array,N/k*i,parts[i],0,parts[i].length);
             }
             System.arraycopy(array,N/k*(k-1),tail,0,tail.length);
+
             arraySorter=new Sorter[k];
-            for (int i = 0; i < k-1; i++) {
-                arraySorter[i]=new Sorter(parts[i]);
-                arraySorter[i].start();
-                try {
-                    arraySorter[i].join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            for (int i = 0; i < k; i++) {
+                if (i<k-1 ){
+                    arraySorter[i]=new Sorter(parts[i]);
                 }
-            }
-            arraySorter[k-1]=new Sorter(tail);
-            res=parts[0];
-            arraySorter[k-1].start();
+                else{//отдельно создаем хвостик
+                    arraySorter[i]=new Sorter(tail);
+                }
+                arraySorter[i].start();}
             try {
-                arraySorter[k-1].join();
+                for (int i = 0; i < k; i++) {
+                    arraySorter[i].join();}
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+//            arraySorter=new Sorter[k];
+//            for (int i = 0; i < k-1; i++) {
+//                arraySorter[i]=new Sorter(parts[i]);
+//                arraySorter[i].start();
+//                try {
+//                    arraySorter[i].join();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            arraySorter[k-1]=new Sorter(tail);
+            res=parts[0];
+//            arraySorter[k-1].start();
+//            try {
+//                arraySorter[k-1].join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
             for (int i = 1; i < k-1; i++) {
                 res=merge(res,parts[i]);
-
             }
 
             res=merge(res,tail);
@@ -136,8 +157,8 @@ public class Main {
                 dif_prev=dif_now;
                 kEnd=k;
                 System.out.println(kEnd+" разница изменилась "+dif_prev);//можно закомментить(использовалось для проверки)
-                count=15;
-            }else{count--;}//count=0(условие выхода из цикла)-> 15 раз подряд разница не изменялась в лучшую сторону
+                count=23;
+            }else{count--;}//count=0(условие выхода из цикла)-> 23 раз подряд разница не изменялась в лучшую сторону
             k++;
         }
         System.out.println(isSorted(res));
@@ -145,12 +166,12 @@ public class Main {
 
 
 
-        //start = System.currentTimeMillis();
+       // long start1 = System.currentTimeMillis();
         //int[] sortedArray = bubbleSort(array);
-        //finish = System.currentTimeMillis();
+        //long finish1 = System.currentTimeMillis();
 
         //System.out.println(isSorted(sortedArray));
-        //System.out.println(finish - start + " ms");
+        //System.out.println(finish1 - start1 + " ms");
     }
 
     public static int[] generate(int n) {
