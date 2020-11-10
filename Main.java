@@ -15,7 +15,7 @@ public class Main {
 //        }
         int k=10;
         int [][] parts=new int[k-1][N/k];
-        int [] tail = new int[N-N/k*(k-1)];//так как разное количество элементов(тут в последнем может получится размер больший, чем в остальных)
+        int [] tail = new int[N-N/k*(k-1)];//так как разное количество элементов(тут в последнем может получиться размер больший, чем в остальных)
         long start = System.currentTimeMillis();
         for (int i = 0; i < k-1; i++) {
             System.arraycopy(array,N/k*i,parts[i],0,parts[i].length);
